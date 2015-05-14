@@ -1,1 +1,3 @@
 com\ceit\bh\entity\User.class
+com\ceit\bh\core\dao\BaseDao.class
+com\ceit\bh\core\dao\BaseDaoImpl.class

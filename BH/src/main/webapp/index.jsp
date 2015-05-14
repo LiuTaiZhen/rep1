@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -39,3 +40,15 @@
 </body>
 </html>
 
+=======
+
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <title>hhh</title>
+</head>
+<body>
+欢迎。。。。。
+</body>
+</html>s
+>>>>>>> bc766493e1cb710750e8ba53bb3499d4f13041e3

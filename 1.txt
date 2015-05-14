@@ -1,0 +1,1197 @@
+locate:
+locate file
+需要定期更新 updatedb
+列出所以跟file相关的文件
+
+updatedb: 
+建立整个系统目录文件的数据库
+
+grep:
+在文件中收索字符匹配的行並輸出
+grep ftp /etc/sercvices
+
+man:
+帮助命令
+man ls 
+
+whatis ：
+表示这是什么意思 获得这个命令是干吗用的。
+
+info
+类似于man
+
+help 
+查看shell内置命令的帮助
+-------------------------------------------------------------
+-------------------------------------------------------------
+压缩命令：
+gzip 文件
+只能压缩文件 不能压缩目录
+不保留源文件
+
+解压缩
+gzip -d 文件
+
+压缩解压命令：
+tar
+-c 产生tar打包文件
+-v 显示详细信息
+-f 指定压缩后的文件名
+-z 打包同时压缩
+压缩后的文件格式：f .tar.gz
+可以打包目录
+目录test1 压缩成一个打包并压缩的文件
+tar -zcvf test1.tar.gz test1
+
+解报
+-x
+tar -x file
+
+.zip 默认window和linux的是zip格式 
+压缩文件
+zip touch.zip /test/touch
+
+也可以压缩目录
+zip -r newfile
+解压
+unzip + 文件名
+
+
+------------------------------------------------------
+------------------------------------------------------
+网络通讯的命令：
+write 
+ctrl D 结束
+
+wall 通知所有人
+
+ping 
+-c +数字
+
+
+shutdown -h now  不建议使用 通知
+reboot 重启
+
+
+shell 应用技用：
+
+bash
+
+tab 命令补全
+ctrl l 清平
+ctrl u 删除光标前面所有的字符
+
+history
+把以前的命令全部显示出来
+
+命令别名：
+alias
+alias copy=cp
+alias xrm="rm -rf"
+
+unalias 删除别名
+
+输出重定型：
+>
+ls -l /tmp > /temp.msgz
+>> 可以追加 
+把两个数据放在一起
+错误输出重定向
+cp -R /usr/back/usr.bak 2> /bak.error
+
+<
+输入重定向
+wall < /etc/motd
+
+管道：
+可以把一个命令的输出传递给另一个命令 作为另一个命令的输入
+命令1|命令2|命令3|。。。。
+例如
+ls -l /etc |more
+ls -l /etc |grep init
+ls -l /etc |grep init| wc -l
+
+grep  init 列出筛选的行
+ wc  统计有多少行
+
+；
+分别执行命令 顺序执行
+pwd ； ls /test ; date
+
+&& 第一执行的成功 才执行下一个命令 然后顺序执行 
+如果第一个执行失败 第二个也执行失败
+write mary< /home/love.msg && rm /home/love.msg
+
+|| 表示或者的关系
+-----------------------------------------------------
+-----------------------------------------------------
+vim的使用：
+vim/vi 没有菜单 只有命令
+
+进入 vim filename  命令模式
+输入 iao  进入插入模式 
+esc 推到命令模式
+命令模式到 编辑模式 ：
+编辑模式 命令模式 命令以回车结束
+命令模式退出 ：wq
+
+a 在光标后附加文本::
+A 在本行行模附加文本
+i 在光标前插入文本
+I 在本行开始插入文本
+o 在光标下插入新行
+O 在光标上插入新行
+
+
+卸载：
+rpm -e +软件名
+安装
+rpm -ivh sudo-1.7.2pl-5.el5.i386.rpm
+
+rpm -q 查看是否软件存在
+rpm -qa  查询所有已经安装的软件
+
+rpm -qf /etc/ls 文件隶属的安装包查询
+
+rpm -qi samba 查询samba的信息
+
+rpm -qip samba  查询一个还没安装的安装包的信息
+
+rpm -ql sudo 查看sudo安装了那些文件
+
+rpm -qd sudo  查看sudo的帮助文档 或者 -qdp  没安装 
+
+
+etc中一般配置文件 
+usr 一般命令文件
+
+
+
+yun的好处
+
+yum remove sudo
+
+yum list | grep sudo
+
+yum check-update sudo
+
+yum --help 帮助文档
+
+/////////////////////////////////////////////
+用户管理
+用户管理配置文件
+用户管理命令
+用户组管理命令
+批量添加用户
+用户授权
+
+添加用户 最好有描述 要有宿主目录
+makdir /home/liutaizhen
+ls -ld /home/liutaizhen
+
+chown liutaizhen /home/liutaizhen
+然后 在/etc/shadow 中增加配置
+
+然后在/etc/skel 文件中增加文件
+
+用户配置文件
+/etc/login.defs
+/etc/default/useradd
+
+设置setUID
+chmod u+s +文件名  4755
+取消
+chmod u-s +文件名
+
+设置 setGID
+chmod g+s 文件名
+取消
+chmod g-s 文件名
+
+黏着位：
+如果一个权限为777的目录 被设置了黏着位 每个用户都可以在目录下创建文件，但每个可以删除自己是所有着的文件
+
+增加黏着位：
+chmod o+t 或者 1777
+
+查找那些setUID 了
+find -perm -0777 -a  -type f/d只找二进制文件 
+find -perm -4000 -o -perm -2000 查找setUID和setGID的文件
+
+添加用户：
+useradd 
+默认添加 -g 缺省所属组 -G 用户所属多个组 -d 宿主目录 -c 描述信息 -u 指UID
+  -e 指定用户失效时间 -s 命令解析器shell
+
+
+添加组 groupadd  -g  组id
+删除组 groupdel 组名
+修改组  groupmod  例如修改用户组信息：groupmod -n apache webGroup 
+                                    修改webGroup 组 名为apache
+
+
+usermod -G 组名 用户名
+gpasswd -a 用户名 组名
+
+ 
+把一个用户加到组里 gpasswd -a 添加用户到用户组 -d 从用户组中删除用户
+-A 设置用户组管理员 -r 删除用户组密码 -R 禁止用户切换为改组
+
+
+组密码 gpasswd +组名  即可设置密码
+
+切换到默一个组： newgrp +组名
+用 id 表示信息
+
+给组授权： 文件
+         chgrp +所属组 +所属目录  改变所属组
+         chmod g+w  +所属目录     给所属组授权
+
+vipw 编辑/etc/passwd  可以避免写混乱
+finger 查看用户详细信息
+echo $PATH 查看路径
+
+查看用户的秘密状态： passwd -S  
+锁定用户 passwd -l + 用户名
+
+锁定用户的原因： 长时间不用 
+passwd -uf   解锁
+
+删除用户  userdel -r 用户名
+同时删除 宿主目录
+
+查找在莫一文件下隶属于taizhen的 文件有那些
+find /home -user taizhen
+
+对需要的文件进行移动或备份
+ 查看 用户密码的设置：chage -l +用户名
+
+
+批量添加用户：
+先添加用户
+
+brother01::1001:11::/home/brother01:/bin/bash
+brother02::1002:11::/home/brother02:/bin/bash
+brother03::1003:11::/home/brother03:/bin/bash
+brother04::1004:11::/home/brother04:/bin/bash
+newusers 命令导入用户信息文件   newusers < user.info
+然后关闭shadowpasswd的功能   通过 pwunconv
+brother01:brother
+brother02:brother
+brother03:brother
+brother04:brother
+
+chpasswd 命令 导入密码文件   chpasswd < passwd.info
+然后开启shadowpasswd的功能   通过 pwconv
+
+
+另一种方法：通过shell脚本来添加
+
+限制用户su 为root
+
+groupadd group1
+chmod 4550 /bin/su
+chgrp sgroup1 /bin/su
+
+
+对一个用户授权 比如可以添加用户的权限：
+which useradd
+
+/////////////////////////////////
+进程管理：
+ps -le | grep httpd  查看进程
+
+进程管理的命令 W
+ps -w
+ps -u 所属用户的进程 ps -l
+ps -a 所有进程
+
+排序：
+ --sort uid 或者 pid
+
+获得用户的进程信息：
+ps -aux |grep taizhen
+
+
+关闭进程：
+kill + pid
+
+强行关闭： kill -9 pid
+重启进程  kill-1 pid   正常是这样重启的   /etc/rc.d/init.d/httpd restart
+
+
+xkill 关闭图形程序  右键 退出
+
+ls /proc
+在这里可以查看 cpu的信息 cat /proc/cpuinfo
+
+查看模个进程的pid 
+pgrep +进程名
+
+pkill + 服务名  这样就可以关闭
+
+
+-------------------------------
+nice 指定程序的运行的优先级
+-20到19  默认为0
+
+越小 优先级越大 
+nice -n +程序 （地址）
+
+这时需要关闭 重新分配优先级
+
+renice 改变一个正在运行的程序的优先级
+
+nohup 使进程在用户退出登录后仍旧继续执行， nohup命令将执行后的数据信息和错误信息默认存储到文件 nohup.out
+ 格式 nohup program & 
+例如： nohup find / -name init* > /test/find.init.2015.4.11 &
+
+终止： ctrl c
+挂起 ： ctrl z  暂停
+恢复到前台继续运行 fg
+恢复到后台继续运行 bg
+查看 被挂起的进程 jobs
+
+top 作用： 进程状态显示和进程控制 每5s 自动刷新一次
+-d 指定刷新的时间间隔
+-c 显示这个命令行而不是仅仅显示命令名
+
+
+敲 u  输入用户名  查看模个用户的进程信息
+敲 k  kill 进程
+敲 h  帮助文档
+
+////////////////////////////////////////////
+计划任务：
+一次性计划任务：
+at 
+（-f 文件名） 时间
+-d or atrm 删除队列中的任务
+-l or atq 查看队列中的任务
+例如：
+at now +5 minutes 
+/usr/bin/wall < /test/test1/aa.info
+下面输入命令  ctrl d 保存  要输入绝对地址 用 which is + 命令 来查询 地址
+
+atq 来查看计划任务
+删除 at -d + 序号
+
+决定哪些用户可以用 at 在/etc/at.deny 中配置  写在里面的用户都不能使用at命令
+---------------------------
+finger root
+date 
+wall  发广播
+---------------------------
+绝对记时法
+相对记时法
+
+用 w 来观看 负载状态 w
+batch 使用方法同at  不同点在于 他会检测系统的负载状态 在 0.8以下在较轻时运行一次
+----------------------------------------------------------------------
+
+周期性任务：
+crontab 命令格式
+作用： 用于生成cron 进程所需要的crontab文件
+
+crontab
+-l 显示当前的crontab
+-r  删除当前的crontab
+
+-e 使用编译器编辑当前的crontab 文件 生成计划任务
+包括： 分钟 小时 天 月 星期 命令/脚本
+
+把知道的具体时间添上  不知道的时间值都添上*
+
+例如 在4点备份 时间可以这样表示
+0  4 *  *  * 
+0  18 *  *  2，5
+0 18  *  1-3  2，5
+* * *       * 1-5
+
+*/2  表示 每隔2分钟  
+3-6， 9-12 三月到六月9月到12    1-5 周一到周五
+例如： 出错后的备份 2>
+/bin/cp -r /etc  /backup/etc.2015.411.info 2> /backup/etc.error.info
+ 
+
+crontab -l 常看
+crontab -e 删除
+
+注意是否启动了 crontab 进程
+ps -le | grep crond
+
+
+
+////////////////////////////
+                          文件系统管理
+
+文件系统构成  /dev 存放设备文件  /proc 虚拟文件系统  存放当前内存镜像中
+      /lost+found 存放一些系统出错的检查结果
+      /tmp  临时文件
+      /etc  系统配置文件
+      /var 包含系统发生变化的文件 如 计划任务 日志文件  邮件
+      /usr 存放所有命令 库 手册页
+     /mnt 临时文件系统的安装点
+    /boot 内核文件及自举程序文件保存位置
+
+df  看分区大小 -h
+du 看目录文件大小  -sh
+file system check  检测修复文件系统 ： fsck ,e2fsck 
+e2fsck -p  /  fsck -y 不用回答是否
+判断文件类型：file
+
+设备挂载
+挂载光驱：
+mount /dev/cdrom  /mnt/cdrom
+df
+cd /mnt/cdrom
+ls /mnt/cdrom
+
+卸载光驱：
+umount /mnt/cdrom
+eject
+
+分区于格式化原理：
+划分分区  fdisk -l /dev/sda   m 获得帮助
+创建文件系统  mkfs.ext3 + /dev/sdb1   。。  mkfs -t ext3
+常识挂载  mount  
+写入配置文件   如何长期使用：在配置中/etc/fstab 配置中
+/dev/sdb1    /web    exts(系统文件）   defaults   1 2
+磁盘配额
+-------------------------------------------
+整个磁盘的复制
+dd  if=/dev/sda  of=/dev/sdb 
+touch 创建一个文件
+dd 创建一个指定大小的文件
+--------------
+例如： 加大内存的大小
+mkdir /var/swap
+chmod 700 /var/swap
+dd if=/dev/zero  of=/var/swap/file.swp  bs=1024k  count=64
+mkswap /var/swap/file.swp  能够使用 1m 的空间
+-----------
+swapon 开启
+swapoff 关闭
+free -m 可以内存
+
+----------------------------
+磁盘配额： 主要是为了防止用户存储过大 通过磁盘配额来设置每个用户的最大使用空间
+开启分区配额功能
+编辑/etc/fastab/文件 在挂载属性上加上标志 用户配额usrquota或者 用户组配额grpquota  （永久的）
+临时开启： mount -o remount /test 
+
+创建一个配额数据库 （进入单用户模式）
+quotacheck  -cvuga  
+
+启动配额功能
+quotaon /test   关闭 quotaoff  /test
+
+编辑用户的配额
+edquota taizhen  （blocks 使用空间的大小 innodes 创建文件的多少  hard 表示强制不许再用了）
+
+
+-------------------
+repquota  /test  查看每个用户的配额
+
+edquota -p taizhen liutaizhen.... 通过 taizhen的配额 来实现 liutaizhen 也一样的配额
+
+----------------------------------------------------------------
+shell编程：
+shell 编程语法
+#! 指定执行脚本的shell
+# 注释行
+命令和控制结构
+1.创建一个包含命令和控制结构的文件
+2.修改这个文件的权限使他可以执行  使用chmod u+x
+3.执行 ./example
+
+变量不能以数字开头 同时 要使用变量时 要在变量名前加上前缀$
+unset 删除一个变量
+
+例如： ls -l  file1 file2 file3
+$0 这是程序的文件名 ls -l
+$n 这个程序的第n个参数数  n=1到9
+$* 这个程序的所有参数    file1 file2 file3
+$# 这个程序的参数个数  3
+$$ 这个程序的PID  
+$! 执行上一个后台命令的pid
+$? 执行上一命令的返回值    0或非0
+
+DATA='/bin/data+ %y%m%d'
+
+shell 脚本测试
+shell 应用实力
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
